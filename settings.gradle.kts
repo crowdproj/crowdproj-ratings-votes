@@ -3,7 +3,6 @@ rootProject.name = "crowdproj"
 pluginManagement {
     plugins {
         val kotlinVersion: String by settings
-        val openapiVersion: String by settings
         val generatorVersion: String by settings
         val nexusStagingVersion: String by settings
 
