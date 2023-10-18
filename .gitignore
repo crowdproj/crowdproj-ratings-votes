@@ -1,0 +1,7 @@
+/.gradle/
+/.idea/
+**/build/
+!**/src/**/build/
+/kotlin-js-store/
+**/logs/
+!**/src/logs/
