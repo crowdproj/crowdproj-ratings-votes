@@ -1,0 +1,347 @@
+openapi: 3.0.3
+info:
+  title: 'Marketplace Ads service ${VERSION_APP}'
+  description: 'Marketplace a place where sellers and buyers meat each other. Ads service provides ads handling from 
+  both sellers and buyers'
+  license:
+    #    identifier: Apache-2.0
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/votes
+tags:
+  - name: vote
+    description: Объявление (о покупке или продаже)
+paths:
+  /v1/create:
+    post:
+      tags:
+        - vote
+      summary: Create vote
+      operationId: VoteCreate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteCreateResponse'
+  /v1/read:
+    post:
+      tags:
+        - vote
+      summary: Read vote
+      operationId: voteRead
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteReadResponse'
+  /v1/update:
+    post:
+      tags:
+        - vote
+      summary: Update vote
+      operationId: voteUpdate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteUpdateResponse'
+  /v1/delete:
+    post:
+      tags:
+        - vote
+      summary: Delete vote
+      operationId: voteDelete
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            $ref: './base.yaml#/components/schemas/RequestId'
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteDeleteResponse'
+
+components:
+  schemas:
+    IRequestVote:
+      allOf:
+        - $ref: './base.yaml#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/VoteRequestDebug'
+        - type: object
+          discriminator:
+            propertyName: requestType
+            mapping:
+              create: '#/components/schemas/VoteCreateRequest'
+              read: '#/components/schemas/VoteReadRequest'
+              update: '#/components/schemas/VoteUpdateRequest'
+              delete: '#/components/schemas/VoteDeleteRequest'
+
+    Error:
+      $ref: './base.yaml#/components/schemas/Error'
+
+    IResponseVote:
+      allOf:
+        - $ref: './base.yaml#/components/schemas/IResponse'
+        - type: object
+          discriminator:
+            propertyName: responseType
+            mapping:
+              create: '#/components/schemas/VoteCreateResponse'
+              read: '#/components/schemas/VoteReadResponse'
+              update: '#/components/schemas/VoteUpdateResponse'
+              delete: '#/components/schemas/VoteDeleteResponse'
+              init: '#/components/schemas/VoteInitResponse'
+
+
+    VoteLock:
+      type: string
+      description: Версия оптимистичной блокировки
+    VoteUserId:
+      $ref: './base.yaml#/components/schemas/UserId'
+    VoteId:
+      type: string
+      description: Идентификатор голоса
+    RatingId:
+      type: string
+      description: Идентификатор рейтинга
+    Score:
+      type: string
+      description: Значение голоса
+    Comment: # Can be referenced as '#/components/schemas/Comment'
+      properties:
+        id:
+          type: string
+          description: A comment unique identificator
+          example: "65yuhgsjcffcy8uf"
+        name:
+          type: string
+          description: message
+          example: "It is my vote!"
+    IsAccept: # Can be referenced as '#/components/schemas/IsAccept'
+      type: boolean
+      description: A value of score
+      example: "true"
+
+    BaseVote:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        ratingId:
+          $ref: '#/components/schemas/RatingId'
+        userId:
+          $ref: '#/components/schemas/VoteUserId'
+        score:
+          $ref: '#/components/schemas/Score'
+        comment:
+          $ref: '#/components/schemas/Comment'
+        isAccept:
+          $ref: '#/components/schemas/IsAccept'
+        createdAt:
+          type: string
+          format: date-time
+          description: A rating date and time created
+        updatedAt:
+          type: string
+          format: date-time
+          description: A rating date and time updated
+
+
+    VoteInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseVote'
+
+    VoteCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseVote'
+
+    VoteCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestVote'
+        - type: object
+          properties:
+            vote:
+              $ref: '#/components/schemas/VoteCreateObject'
+
+    VoteReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/VoteId'
+
+    VoteReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestVote'
+        - type: object
+          properties:
+            vote:
+              $ref: '#/components/schemas/VoteReadObject'
+    VoteUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseVote'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/VoteId'
+            lock:
+              $ref: '#/components/schemas/VoteLock'
+
+    VoteUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestVote'
+        - type: object
+          properties:
+            vote:
+              $ref: '#/components/schemas/VoteUpdateObject'
+
+    VoteDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/VoteId'
+            lock:
+              $ref: '#/components/schemas/VoteLock'
+
+    VoteDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequestVote'
+        - type: object
+          properties:
+            vote:
+              $ref: '#/components/schemas/VoteDeleteObject'
+
+    VoteResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseVote'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/VoteId'
+            userId:
+              $ref: '#/components/schemas/VoteUserId'
+            lock:
+              $ref: '#/components/schemas/VoteLock'
+
+    VoteCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseVote'
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            vote:
+              $ref: '#/components/schemas/VoteResponseObject'
+
+    VoteReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseVote'
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            vote:
+              $ref: '#/components/schemas/VoteResponseObject'
+
+    VoteUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseVote'
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            vote:
+              $ref: '#/components/schemas/VoteResponseObject'
+
+    VoteDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponseVote'
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            vote:
+              $ref: '#/components/schemas/VoteResponseObject'
+
+    # STUBS ======================
+    VoteRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    VoteRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/VoteDebug'
+
+    VoteDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/VoteRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/VoteRequestDebugStubs'
+
+    VoteRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - cannotDelete
+        - badSearchString
