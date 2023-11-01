@@ -11,12 +11,12 @@ data class CwpVote(
     var score: CwpVoteScore = CwpVoteScore.NONE,
     var comment: CwpVoteComment = CwpVoteComment.NONE,
     var isAccepted: CwpVoteIsAccepted = CwpVoteIsAccepted.NONE,
-    var createAt: Instant = Clock.System.now(),
-    var updateAt: Instant = Clock.System.now()
+    var createAt: Instant? = Clock.System.now(),
+    var updateAt: Instant? = Clock.System.now()
 ) {
     fun isEmpty() = this == NONE
 
     companion object {
-        private val NONE = CwpVote()
+        val NONE = CwpVote()
     }
 }
