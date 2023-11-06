@@ -33,7 +33,6 @@ kotlin {
             kotlin.srcDirs("${layout.buildDirectory.get()}/generate-resources/main/src/commonMain/kotlin")
             dependencies {
                 implementation(kotlin("stdlib-common"))
-
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
             }
@@ -77,7 +76,7 @@ crowdprojGenerate {
     inputSpec.set("$specDir/spec-crowdproj-vote-$apiVersion.yaml")
 }
 
-//afterEvaluate {
+// afterEvaluate {
 //    val openApiGenerate = tasks.getByName("openApiGenerate")
 //    tasks.filter { it.name.startsWith("compile") }.forEach {
 //        it.dependsOn(openApiGenerate)
@@ -85,5 +84,4 @@ crowdprojGenerate {
 //    tasks.filter { it.name.endsWith("Elements") }.forEach {
 //        it.dependsOn(openApiGenerate)
 //    }
-//}
-
+// }
