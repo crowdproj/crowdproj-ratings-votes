@@ -5,28 +5,22 @@ plugins {
 kotlin {
     jvm {}
     linuxX64 {}
+    macosX64 {}
 
     sourceSets {
         val coroutinesVersion: String by project
 
-        all { languageSettings.optIn("kotlin.RequiresOptIn") }
-
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-
-                implementation(project(":crowdproj-vote-common"))
-                implementation(project(":lib-cor"))
-                implementation(project(":stubs"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
-
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
 
@@ -35,7 +29,6 @@ kotlin {
                 implementation(kotlin("stdlib-jdk8"))
             }
         }
-
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
