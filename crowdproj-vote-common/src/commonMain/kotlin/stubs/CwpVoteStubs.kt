@@ -31,7 +31,7 @@ class CwpVoteStub {
             userId = CwpVoteUserId("2"),
             ratingId = CwpVoteRatingId("3"),
             score = CwpVoteScore("4"),
-            comment = CwpVoteComment("5", "testComment"),
+            comment = CwpVoteComment("testComment"),
             isAccepted = CwpVoteIsAccepted(true),
             createAt = null,
             updateAt = null

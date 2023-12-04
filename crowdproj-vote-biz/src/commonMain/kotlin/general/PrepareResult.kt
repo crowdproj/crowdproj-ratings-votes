@@ -8,9 +8,11 @@ import com.crowdproj.vote.lib.cor.worker
 
 fun ICorChainDsl<CwpVoteContext>.prepareResult(title: String) = worker {
     this.title = title
-    description = "Подготовка данных для ответа клиенту на запрос"
+    description = "Prepare object to send response to client"
     on { workMode != CwpVoteWorkMode.STUB }
     handle {
+        voteResponse = voteRepoDone
+        votesResponse = votesRepoDone
         state = when (val st = state) {
             CwpVoteState.RUNNING -> CwpVoteState.FINISHING
             else -> st

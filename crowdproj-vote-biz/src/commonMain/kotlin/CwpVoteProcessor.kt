@@ -1,12 +1,20 @@
 package com.crowdproj.vote.biz
 
+import com.crowdproj.vote.biz.general.initRepo
 import com.crowdproj.vote.biz.general.operation
 import com.crowdproj.vote.biz.general.prepareResult
 import com.crowdproj.vote.biz.general.stubs
-import com.crowdproj.vote.biz.validation.finishAdValidation
-import com.crowdproj.vote.biz.validation.validateCommentIdProperFormat
+import com.crowdproj.vote.biz.repo.repoCreate
+import com.crowdproj.vote.biz.repo.repoDelete
+import com.crowdproj.vote.biz.repo.repoPrepareCreate
+import com.crowdproj.vote.biz.repo.repoPrepareDelete
+import com.crowdproj.vote.biz.repo.repoPrepareUpdate
+import com.crowdproj.vote.biz.repo.repoRead
+import com.crowdproj.vote.biz.repo.repoUpdate
+import com.crowdproj.vote.biz.validation.finishVoteValidation
 import com.crowdproj.vote.biz.validation.validateIdNotEmpty
 import com.crowdproj.vote.biz.validation.validateIdProperFormat
+import com.crowdproj.vote.biz.validation.validateLockNotEmpty
 import com.crowdproj.vote.biz.validation.validateRatingIdHasContent
 import com.crowdproj.vote.biz.validation.validateRatingIdNotEmpty
 import com.crowdproj.vote.biz.validation.validateScoreHasContent
@@ -18,7 +26,6 @@ import com.crowdproj.vote.biz.workers.initStatus
 import com.crowdproj.vote.biz.workers.stubCreateSuccess
 import com.crowdproj.vote.biz.workers.stubDeleteSuccess
 import com.crowdproj.vote.biz.workers.stubReadSuccess
-import com.crowdproj.vote.biz.workers.stubValidationBadCommentId
 import com.crowdproj.vote.biz.workers.stubValidationBadId
 import com.crowdproj.vote.biz.workers.stubValidationBadRatingId
 import com.crowdproj.vote.biz.workers.stubValidationBadScore
@@ -27,102 +34,142 @@ import com.crowdproj.vote.common.CwpVoteContext
 import com.crowdproj.vote.common.config.CwpVoteCorSettings
 import com.crowdproj.vote.common.models.CwpVoteCommand
 import com.crowdproj.vote.common.models.CwpVoteId
+import com.crowdproj.vote.common.models.CwpVoteRatingId
+import com.crowdproj.vote.common.models.CwpVoteScore
+import com.crowdproj.vote.common.models.CwpVoteState
+import com.crowdproj.vote.common.models.CwpVoteUserId
+import com.crowdproj.vote.lib.cor.chain
 import com.crowdproj.vote.lib.cor.rootChain
 import com.crowdproj.vote.lib.cor.worker
 import workers.stubNoCase
 
 class CwpVoteProcessor(
     @Suppress("unused")
-    private val corSettings: CwpVoteCorSettings = CwpVoteCorSettings.NONE
+    private val corSettings: CwpVoteCorSettings = CwpVoteCorSettings()
 ) {
 
     suspend fun exec(ctx: CwpVoteContext) =
-        BusinessChain.exec(ctx.apply { settings = corSettings })
+        BusinessChain.exec(ctx.apply { settings = this@CwpVoteProcessor.corSettings })
 
     companion object {
         private val BusinessChain = rootChain<CwpVoteContext> {
-            initStatus("Инициализация статуса")
+            initStatus("Init status")
+            initRepo("Init repo")
 
-            operation("Создание объявления", CwpVoteCommand.CREATE) {
-                stubs("Обработка стабов") {
-                    stubCreateSuccess("Имитация успешной обработки")
-                    stubValidationBadRatingId("Имитация ошибки валидации идентификатора рейтинга")
-                    stubValidationBadUserId("Имитация ошибки валидации идентификатора пользователя")
-                    stubValidationBadScore("Имитация ошибки валидации значения голоса")
-                    stubValidationBadCommentId("Имитация ошибки валидации значения идентификатора комментария")
-                    stubNoCase("Ошибка: запрошенный стаб недопустим")
+            operation("Create vote", CwpVoteCommand.CREATE) {
+                stubs("Stubs processing") {
+                    stubCreateSuccess("Simulation of successful processing")
+                    stubValidationBadRatingId("Simulating a vote identifier validation error")
+                    stubValidationBadUserId("Simulating a user ID validation error")
+                    stubValidationBadScore("Simulating a vote value validation error")
+                    stubNoCase("Error: The requested stub is invalid")
                 }
                 validation {
-                    worker("Копируем поля в voteValidating") { voteValidating = voteRequest.copy() }
-                    worker("Очистка id") { voteValidating.id = CwpVoteId.NONE }
-                    validateRatingIdNotEmpty("Проверка, что идентификатор рейтинга не пуст")
-                    validateRatingIdHasContent("Проверка символов в идентификаторе рейтинга")
-                    validateUserIdNotEmpty("Проверка, что идентификатор пользователя не пустой")
-                    validateUserIdHasContent("Проверка символов в идентификаторе пользователя")
-                    validateScoreNotEmpty("Проверка, что голос не пустой")
-                    validateScoreHasContent("Проверка символов голоса")
-                    validateCommentIdProperFormat("Проверка идентификатора комментария")
-                    finishAdValidation("Завершение проверок")
+                    worker("Copy data to voteValidating") { voteValidating = voteRequest.copy() }
+                    worker("Clear id") { voteValidating.id = CwpVoteId.NONE }
+                    worker("Clear score field") {
+                        voteValidating.score =
+                            CwpVoteScore(voteValidating.score.asString().trim())
+                    }
+                    worker("Clear ratingId field") {
+                        voteValidating.ratingId = CwpVoteRatingId(voteValidating.ratingId.asString().trim())
+                    }
+                    worker("Clear userId field") {
+                        voteValidating.userId =
+                            CwpVoteUserId(voteValidating.userId.asString().trim())
+                    }
+                    validateRatingIdNotEmpty("Check that the rating identifier is not empty")
+                    validateRatingIdHasContent("Checking characters in rating identifier")
+                    validateUserIdNotEmpty("Check that the user ID is not empty")
+                    validateUserIdHasContent("Checking characters in user ID")
+                    validateScoreNotEmpty("Checking that the score is not empty")
+                    validateScoreHasContent("Score character check")
+                    finishVoteValidation("Checks is completed")
                 }
-
-                prepareResult("Подготовка ответа")
+                chain {
+                    title = "Saving logic"
+                    repoPrepareCreate("Prepare object to save")
+                    repoCreate("Create vote into database")
+                }
+                prepareResult("Prepare answer")
             }
-            operation("Получить объявление", CwpVoteCommand.READ) {
-                stubs("Обработка стабов") {
-                    stubReadSuccess("Имитация успешной обработки")
-                    stubValidationBadId("Имитация ошибки валидации id")
-                    stubNoCase("Ошибка: запрошенный стаб недопустим")
+            operation("Read vote from database ", CwpVoteCommand.READ) {
+                stubs("Stubs processing") {
+                    stubReadSuccess("Simulation of successful processing")
+                    stubValidationBadId("Simulating a vote identifier validation error")
+                    stubNoCase("Error: The requested stub is invalid")
                 }
                 validation {
-                    worker("Копируем поля в adValidating") { voteValidating = voteRequest.copy() }
-                    validateIdNotEmpty("Проверка на непустой id")
-                    validateIdProperFormat("Проверка формата id")
+                    worker("Copy fields into adValidating") { voteValidating = voteRequest.copy() }
+                    validateIdNotEmpty("Check that id is not empty")
+                    validateIdProperFormat("Checking characters in ID")
 
-                    finishAdValidation("Успешное завершение процедуры валидации")
+                    finishVoteValidation("Checks is completed")
                 }
-                prepareResult("Подготовка ответа")
+                chain {
+                    title = "Reading logic"
+                    repoRead("Read vote from database")
+                    worker {
+                        title = "Preparing the object for Read"
+                        on { state == CwpVoteState.RUNNING }
+                        handle { voteRepoDone = voteRepoRead }
+                    }
+                }
+                prepareResult("Preparing the object")
             }
-            operation("Изменить объявление", CwpVoteCommand.UPDATE) {
-                stubs("Обработка стабов") {
-                    stubReadSuccess("Имитация успешной обработки")
-                    stubValidationBadId("Имитация ошибки валидации id")
-                    stubValidationBadRatingId("Имитация ошибки валидации идентификатора рейтинга")
-                    stubValidationBadUserId("Имитация ошибки валидации идентификатора пользователя")
-                    stubValidationBadScore("Имитация ошибки валидации значения голоса")
-                    stubValidationBadCommentId("Имитация ошибки валидации значения идентификатора комментария")
-                    stubNoCase("Ошибка: запрошенный стаб недопустим")
+            operation("Update vote", CwpVoteCommand.UPDATE) {
+                stubs("Stubs processing") {
+                    stubReadSuccess("Simulation of successful processing")
+                    stubValidationBadId("Simulating a vote identifier validation error")
+                    stubValidationBadRatingId("Simulating a vote identifier validation error")
+                    stubValidationBadUserId("Simulating a user ID validation error")
+                    stubValidationBadScore("Simulating a vote value validation error")
+                    stubNoCase("Error: The requested stub is invalid")
                 }
                 validation {
-                    worker("Копируем поля в adValidating") { voteValidating = voteRequest.copy() }
-                    validateIdNotEmpty("Проверка на непустой id")
-                    validateIdProperFormat("Проверка формата id")
-                    validateRatingIdNotEmpty("Проверка, что идентификатор рейтинга не пуст")
-                    validateRatingIdHasContent("Проверка символов в идентификаторе рейтинга")
-                    validateUserIdNotEmpty("Проверка, что идентификатор пользователя не пустой")
-                    validateUserIdHasContent("Проверка символов в идентификаторе пользователя")
-                    validateScoreNotEmpty("Проверка, что голос не пустой")
-                    validateCommentIdProperFormat("Проверка идентификатора комментария")
-                    validateScoreHasContent("Проверка символов голоса")
+                    worker("Copy fields into adValidating") { voteValidating = voteRequest.copy() }
+                    validateIdNotEmpty("Check that id is not empty")
+                    validateIdProperFormat("Checking characters in ID")
+                    validateLockNotEmpty("Check that lock is not empty")
+                    validateRatingIdNotEmpty("Check that the rating identifier is not empty")
+                    validateRatingIdHasContent("Checking characters in rating identifier")
+                    validateUserIdNotEmpty("Check that the user ID is not empty")
+                    validateUserIdHasContent("Checking characters in user ID")
+                    validateScoreNotEmpty("Checking that the score is not empty")
+                    validateScoreHasContent("Score character check")
 
-                    finishAdValidation("Успешное завершение процедуры валидации")
+                    finishVoteValidation("Checks is completed")
                 }
-                prepareResult("Подготовка ответа")
+                chain {
+                    title = "Saving logic"
+                    repoRead("Read vote from database")
+                    repoPrepareUpdate("Prepare object to update")
+                    repoUpdate("Update vote in database")
+                }
+                prepareResult("Preparing the object")
             }
-            operation("Удалить объявление", CwpVoteCommand.DELETE) {
-                stubs("Обработка стабов") {
-                    stubDeleteSuccess("Имитация успешной обработки")
-                    stubValidationBadId("Имитация ошибки валидации id")
-                    stubNoCase("Ошибка: запрошенный стаб недопустим")
+            operation("Cancel vote", CwpVoteCommand.DELETE) {
+                stubs("Stubs processing") {
+                    stubDeleteSuccess("Simulation of successful processing")
+                    stubValidationBadId("Simulating a vote identifier validation error")
+                    stubNoCase("Error: The requested stub is invalid")
                 }
                 validation {
-                    worker("Копируем поля в adValidating") {
+                    worker("Copy fields into adValidating") {
                         voteValidating = voteRequest.copy()
                     }
-                    validateIdNotEmpty("Проверка на непустой id")
-                    validateIdProperFormat("Проверка формата id")
-                    finishAdValidation("Успешное завершение процедуры валидации")
+                    validateIdNotEmpty("Check that id is not empty")
+                    validateIdProperFormat("Checking characters in ID")
+                    validateLockNotEmpty("Check that lock is not empty")
+                    finishVoteValidation("Checks is completed")
                 }
-                prepareResult("Подготовка ответа")
+                chain {
+                    title = "Сancellation logic"
+                    repoRead("Read vote from database")
+                    repoPrepareDelete("Prepare object to cancel")
+                    repoDelete("Cancel vote")
+                }
+                prepareResult("Preparing the object")
             }
         }.build()
     }

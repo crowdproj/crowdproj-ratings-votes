@@ -1,0 +1,142 @@
+
+
+GET http://127.0.0.1:8081/
+
+### Create
+POST http://127.0.0.1:8080/api/v1/vote/create
+Content-Type: application/json
+X-Request-Id: rq-b7936414-ee9f-11ed-a05b-0242ac120003
+
+{
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "vote": {
+    "ratingId": "12345",
+    "userId": "testUser",
+    "score": "12",
+    "comment": "It is my vote!"
+  }
+}
+
+### Read
+POST http://127.0.0.1:8080/api/v1/vote/read
+Content-Type: application/json
+X-Request-Id: rq-b7936414-ee9f-11ed-a05b-0242ac120003
+
+{
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  },
+  "vote": {
+    "id": "ba724d07-ab4f-44c6-b459-fcb42674d04f"
+  }
+}
+
+### Get unexisted ID
+POST http://127.0.0.1:8080/api/v1/vote/read
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXSwiaWQiOiJ1c2VyMSJ9.fE8bj8ICmYpcAbD5uyqj4NxW41RLYFpezBhfbew1pZ4
+
+
+{
+  "vote": {
+    "id": "99999"
+  },
+  "debug": {
+    "mode": "prod",
+    "stub": "badId"
+  }
+}
+
+### Get wrong format ID
+POST http://127.0.0.1:8080/api/v1/vote/read
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXSwiaWQiOiJ1c2VyMSJ9.fE8bj8ICmYpcAbD5uyqj4NxW41RLYFpezBhfbew1pZ4
+
+
+{
+  "vote": {
+    "id": "&99999"
+  },
+  "debug": {
+    "mode": "prod",
+    "stub": "badId"
+  }
+}
+
+### Update
+POST http://localhost:8080/api/v1/vote/update
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXSwiaWQiOiJ1c2VyMSJ9.fE8bj8ICmYpcAbD5uyqj4NxW41RLYFpezBhfbew1pZ4
+
+
+{
+  "vote": {
+    "id": "8f6838c3-a941-4dae-b2e1-14a37ed353a4",
+    "score": "18",
+    "userId": "testUser",
+    "ratingId": "12345",
+    "comment": "updated comment",
+    "lock": "f949992a-e108-4af0-b4a7-1112049e6cab"
+  },
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  }
+}
+### "lock": "3d8fbaae-89f8-49d9-8655-e215ee902d07"
+### Update with unexistedId
+POST http://localhost:8080/api/v1/vote/update
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXSwiaWQiOiJ1c2VyMSJ9.fE8bj8ICmYpcAbD5uyqj4NxW41RLYFpezBhfbew1pZ4
+
+
+{
+  "vote": {
+    "id": "badId",
+    "score": "18",
+    "userId": "testUser",
+    "ratingId": "12345",
+    "comment": "updated comment"
+  },
+  "debug": {
+    "mode": "prod",
+    "stub": "badId"
+  }
+}
+
+### Delete existed
+POST http://localhost:8080/api/v1/vote/delete
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXSwiaWQiOiJ1c2VyMSJ9.fE8bj8ICmYpcAbD5uyqj4NxW41RLYFpezBhfbew1pZ4
+
+
+{
+  "vote": {
+    "id": "577d454f-2325-460c-a9ac-d4f87a5b3de0",
+    "lock": "181d7502-e8a2-4a13-8580-2f1280498b31"
+  },
+  "debug": {
+    "mode": "prod",
+    "stub": "success"
+  }
+}
+
+### Delete non-existed
+POST http://localhost:8080/api/v1/vote/delete
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZC11c2VycyIsImlzcyI6Ik90dXNLb3RsaW4iLCJncm91cHMiOlsiVVNFUiIsIlRFU1QiXSwiaWQiOiJ1c2VyMSJ9.fE8bj8ICmYpcAbD5uyqj4NxW41RLYFpezBhfbew1pZ4
+
+
+{
+  "vote": {
+    "id": "unknownId"
+  },
+  "debug": {
+    "mode": "prod",
+    "stub": "badId"
+  }
+}

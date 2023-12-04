@@ -77,28 +77,6 @@ class VoteUpdateStubTest {
     }
 
     @Test
-    fun `badCommentId - wrong format`() = runTest {
-        val ctx = CwpVoteContext(
-            command = CwpVoteCommand.UPDATE,
-            state = CwpVoteState.NONE,
-            workMode = CwpVoteWorkMode.STUB,
-            stubCase = CwpVoteStubs.BAD_COMMENT_ID,
-            voteRequest = CwpVote(
-                id = id,
-                ratingId = CwpVoteRatingId(ratingId),
-                userId = CwpVoteUserId(userId),
-                score = CwpVoteScore(score),
-                comment = CwpVoteComment("$%^&*", "comment")
-            )
-        )
-        processor.exec(ctx)
-        assertEquals(CwpVote(), ctx.voteResponse)
-        assertEquals("commentId", ctx.errors.firstOrNull()?.field)
-        assertEquals("validation", ctx.errors.firstOrNull()?.group)
-    }
-
-
-    @Test
     fun badRatingId() = runTest {
         val ctx = CwpVoteContext(
             command = CwpVoteCommand.CREATE,

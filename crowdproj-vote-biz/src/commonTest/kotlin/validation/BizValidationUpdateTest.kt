@@ -3,6 +3,7 @@ package com.crowdproj.vote.biz.validation
 import com.crowdproj.vote.biz.CwpVoteProcessor
 import com.crowdproj.vote.common.config.CwpVoteCorSettings
 import com.crowdproj.vote.common.models.CwpVoteCommand
+import com.crowdproj.vote.repo.stubs.VoteRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
@@ -12,7 +13,9 @@ class BizValidationUpdateTest {
 
     private val command = CwpVoteCommand.UPDATE
     private val settings by lazy {
-        CwpVoteCorSettings()
+        CwpVoteCorSettings(
+            repoTest = VoteRepoStub()
+        )
     }
     private val processor by lazy { CwpVoteProcessor(settings) }
 
@@ -51,10 +54,4 @@ class BizValidationUpdateTest {
 
     @Test
     fun badSymbolsScore() = validationScoreSymbols(command, processor)
-
-    @Test
-    fun correctCommentId() = validationCommentIdCorrect(command, processor)
-
-    @Test
-    fun badSymbolsCommentId() = validationCommentIdSymbols(command, processor)
 }

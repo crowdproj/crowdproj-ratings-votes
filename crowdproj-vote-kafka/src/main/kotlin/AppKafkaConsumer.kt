@@ -1,6 +1,6 @@
 package com.crowdproj.vote.kafka
 
-import CwpVoteProcessor
+import com.crowdproj.vote.biz.CwpVoteProcessor
 import com.crowdproj.vote.common.CwpVoteContext
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.Dispatchers

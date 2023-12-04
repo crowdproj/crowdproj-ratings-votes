@@ -6,16 +6,16 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-val kotestVersion: String by project
-val springdocOpenapiUiVersion: String by project
-val coroutinesVersion: String by project
-val serializationVersion: String by project
-
 kotlin {
     jvmToolchain(17)
 }
 
 dependencies {
+    val kotestVersion: String by project
+    val springdocOpenapiUiVersion: String by project
+    val coroutinesVersion: String by project
+    val serializationVersion: String by project
+
     implementation("org.springframework.boot:spring-boot-starter-actuator") // info; refresh; springMvc output
     implementation("org.springframework.boot:spring-boot-starter-webflux") // Controller, Service, etc..
     implementation("org.springframework.boot:spring-boot-starter-websocket") // Controller, Service, etc..
@@ -33,7 +33,30 @@ dependencies {
     implementation(project(":crowdproj-vote-api-v1-mappers"))
     implementation(project(":crowdproj-vote-api-v1"))
 
+    // stubs
+    implementation(project(":stubs"))
+
+    // biz
+    implementation(project(":crowdproj-vote-biz"))
+
+    // logging
+    implementation(project(":lib-logging-module"))
+    implementation(project(":lib-logging-logback"))
+    implementation(project(":mappers-log"))
+    implementation(project(":api-log"))
+
+    // repository
+    implementation(project(":crowdproj-votes-repo-in-memory"))
+    implementation(project(":crowdproj-vote-repo-postgresql"))
+    implementation(project(":crowdproj-vote-repo-tests"))
+
+    implementation(project(":crowdproj-vote-repo-stubs"))
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation(kotlin("test-common"))
+    implementation(kotlin("test-annotations-common"))
+    testImplementation(kotlin("test-junit"))
+    implementation(kotlin("stdlib"))
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-webflux") // Controller, Service, etc..

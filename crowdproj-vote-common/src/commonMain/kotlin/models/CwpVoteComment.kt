@@ -1,9 +1,12 @@
 package com.crowdproj.vote.common.models
 
-class CwpVoteComment(val id: String, val value: String) {
-    fun asString() = "id = $id, comment = $value"
+import kotlin.jvm.JvmInline
+
+@JvmInline
+value class CwpVoteComment(val value: String) {
+    fun asString() = value
 
     companion object {
-        val NONE = CwpVoteComment("", "")
+        val NONE = CwpVoteComment("")
     }
 }

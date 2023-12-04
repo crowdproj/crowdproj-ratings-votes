@@ -162,15 +162,9 @@ components:
       type: string
       description: Значение голоса
     Comment: # Can be referenced as '#/components/schemas/Comment'
-      properties:
-        id:
-          type: string
-          description: A comment unique identificator
-          example: "65yuhgsjcffcy8uf"
-        name:
-          type: string
-          description: message
-          example: "It is my vote!"
+      type: string
+      description: Значение голоса
+      example: "It is my vote!"
     IsAccept: # Can be referenced as '#/components/schemas/IsAccept'
       type: boolean
       description: A value of score

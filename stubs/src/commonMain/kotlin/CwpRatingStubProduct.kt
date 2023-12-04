@@ -11,7 +11,7 @@ object CwpVoteStubProduct {
             userId = CwpVoteUserId("userId"),
             ratingId = CwpVoteRatingId("3"),
             score = CwpVoteScore("4"),
-            comment = CwpVoteComment("5", "testComment"),
+            comment = CwpVoteComment("testComment"),
             isAccepted = CwpVoteIsAccepted(true),
             createAt = Instant.parse("2010-06-01T22:19:44.475Z"),
             updateAt = Instant.parse("2010-07-05T12:11:40.475Z")

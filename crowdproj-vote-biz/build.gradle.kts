@@ -17,6 +17,7 @@ kotlin {
 
                 implementation(project(":crowdproj-vote-common"))
                 implementation(project(":lib-cor"))
+                implementation(project(":lib-logging-module"))
                 implementation(project(":stubs"))
             }
         }
@@ -26,6 +27,9 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
 
+                implementation(project(":crowdproj-vote-repo-stubs"))
+                implementation(project(":crowdproj-vote-repo-tests"))
+                implementation(project(":crowdproj-votes-repo-in-memory"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }

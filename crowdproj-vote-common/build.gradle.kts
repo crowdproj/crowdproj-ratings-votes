@@ -14,6 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation(project(":lib-logging-module"))
 
                 api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
             }

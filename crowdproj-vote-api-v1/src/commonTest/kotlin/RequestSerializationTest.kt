@@ -13,7 +13,7 @@ class RequestSerializationTest {
             stub = VoteRequestDebugStubs.SUCCESS,
         ),
         vote = VoteCreateObject(
-            score = "1", ratingId = "11", userId = "testUser", comment = Comment(id = "111", name = "testComment")
+            score = "1", ratingId = "11", userId = "testUser", comment = "testComment"
         )
     )
 
@@ -28,8 +28,7 @@ class RequestSerializationTest {
         assertContains(json, Regex("\"score\":\\s*\"1\""))
         assertContains(json, Regex("\"ratingId\":\\s*\"11\""))
         assertContains(json, Regex("\"userId\":\\s*\"testUser\""))
-        assertContains(json, Regex("\"id\":\\s*\"111\""))
-        assertContains(json, Regex("\"name\":\\s*\"testComment\""))
+        assertContains(json, Regex("\"comment\":\\s*\"testComment\""))
     }
 
     @Test

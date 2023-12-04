@@ -3,17 +3,21 @@ package com.crowdproj.vote.biz.validation
 import com.crowdproj.vote.biz.CwpVoteProcessor
 import com.crowdproj.vote.common.config.CwpVoteCorSettings
 import com.crowdproj.vote.common.models.CwpVoteCommand
+import com.crowdproj.vote.repo.stubs.VoteRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
-// TODO-validation-5: смотрим пример теста валидации, собранного из тестовых функций-оберток
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationCreateTest {
 
     private val command = CwpVoteCommand.CREATE
+
     private val settings by lazy {
-        CwpVoteCorSettings()
+        CwpVoteCorSettings(
+            repoTest = VoteRepoStub()
+        )
     }
+
     private val processor by lazy { CwpVoteProcessor(settings) }
 
     @Test
@@ -42,10 +46,4 @@ class BizValidationCreateTest {
 
     @Test
     fun badSymbolsScore() = validationScoreSymbols(command, processor)
-
-    @Test
-    fun correctCommentId() = validationCommentIdCorrect(command, processor)
-
-    @Test
-    fun badSymbolsCommentId() = validationCommentIdSymbols(command, processor)
 }

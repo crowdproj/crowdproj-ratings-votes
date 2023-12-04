@@ -60,7 +60,7 @@ class CwpVoteDeleteTest {
                 ratingId = CwpVoteRatingId("10"),
                 userId = CwpVoteUserId("11"),
                 score = CwpVoteScore("5"),
-                comment = CwpVoteComment(id = "1", value = "test"),
+                comment = CwpVoteComment(value = "test"),
                 isAccepted = CwpVoteIsAccepted(true),
                 createAt = now,
                 updateAt = now
@@ -74,7 +74,7 @@ class CwpVoteDeleteTest {
         assertEquals("10", api.vote?.ratingId)
         assertEquals("11", api.vote?.userId)
         assertEquals("5", api.vote?.score)
-        assertEquals("1", api.vote?.comment?.id)
+        assertEquals("test", api.vote?.comment)
         assertEquals(now.toString(), api.vote?.createdAt)
         assertEquals(now.toString(), api.vote?.updatedAt)
     }

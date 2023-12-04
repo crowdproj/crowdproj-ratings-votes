@@ -1,7 +1,5 @@
 package com.crowdproj.vote.common.repo
 
-import com.crowdproj.ad.common.repo.DbVoteIdRequest
-
 interface IVoteRepository {
     suspend fun createVote(rq: DbVoteRequest): DbVoteResponse
     suspend fun readVote(rq: DbVoteIdRequest): DbVoteResponse

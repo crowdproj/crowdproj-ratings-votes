@@ -9,6 +9,7 @@ pluginManagement {
         val springframeworkBootVersion: String by settings
         val springDependencyManagementVersion: String by settings
         val pluginSpringVersion: String by settings
+        val pluginJpa: String by settings
         val kotestVersion: String by settings
         val pluginShadow: String by settings
 
@@ -28,6 +29,8 @@ pluginManagement {
 
         id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
         id("com.bmuschko.docker-remote-api") version bmuschkoVersion apply false
+
+        kotlin("plugin.jpa") version pluginJpa apply false
     }
 }
 
@@ -39,3 +42,11 @@ include("crowdproj-vote-kafka")
 include("crowdproj-vote-biz")
 include("stubs")
 include("lib-cor")
+include("crowdproj-votes-repo-in-memory")
+include("crowdproj-vote-repo-tests")
+include("crowdproj-vote-repo-postgresql")
+include("lib-logging-module")
+include("api-log")
+include("mappers-log")
+include("lib-logging-logback")
+include("crowdproj-vote-repo-stubs")

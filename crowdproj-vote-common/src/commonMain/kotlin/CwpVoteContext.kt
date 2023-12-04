@@ -23,7 +23,7 @@ data class CwpVoteContext(
 
     var voteValidated: CwpVote = CwpVote(),
 
-    var voteRepoReVote: CwpVote = CwpVote(),
+    var voteRepoRead: CwpVote = CwpVote(),
     var voteRepoPrepare: CwpVote = CwpVote(),
     var voteRepoDone: CwpVote = CwpVote(),
     var votesRepoDone: MutableList<CwpVote> = mutableListOf(),

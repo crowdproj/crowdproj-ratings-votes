@@ -27,10 +27,6 @@ fun CwpVoteContext.fail(error: CwpVoteError) {
 
 fun errorValidation(
     field: String,
-    /**
-     * Код, характеризующий ошибку. Не должен включать имя поля или указание на валидацию.
-     * Например: empty, badSymbols, tooLong, etc
-     */
     violationCode: String,
     description: String,
     level: CwpVoteError.Level = CwpVoteError.Level.ERROR,
@@ -43,10 +39,6 @@ fun errorValidation(
 )
 
 fun errorAdministration(
-    /**
-     * Код, характеризующий ошибку. Не должен включать имя поля или указание на валидацию.
-     * Например: empty, badSymbols, tooLong, etc
-     */
     field: String = "",
     violationCode: String,
     description: String,
@@ -69,4 +61,25 @@ fun errorRepoConcurrency(
     group = "repo",
     message = "The object has been changed concurrently by another user or process",
     exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
+)
+
+val errorEmptyId = CwpVoteError(
+    code = "id-empty",
+    field = "id",
+    group = "cruds",
+    message = "id must not be null or blank"
+)
+
+val errorNotFound = CwpVoteError(
+    code = "not-found",
+    field = "id",
+    group = "cruds",
+    message = "not found",
+)
+
+val errorSave = CwpVoteError(
+    code = "not-save",
+    field = "row",
+    group = "cruds",
+    message = "not save a new item",
 )

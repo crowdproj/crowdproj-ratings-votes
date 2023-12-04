@@ -17,7 +17,7 @@ class ResponseSerializationTest {
             ratingId = "11",
             userId = "testUser",
             score = "111",
-            comment = Comment(id = "111", name = "testComment"),
+            comment = "testComment",
             isAccept = true,
             createdAt = "10.10.2023",
             updatedAt = "11.10.2023"
@@ -36,6 +36,7 @@ class ResponseSerializationTest {
         assertContains(json, Regex("\"id\":\\s*\"1\""))
         assertContains(json, Regex("\"ratingId\":\\s*\"11\""))
         assertContains(json, Regex("\"userId\":\\s*\"testUser\""))
+        assertContains(json, Regex("\"comment\":\\s*\"testComment\""))
         assertContains(json, Regex("\"score\":\\s*\"111\""))
         assertContains(json, Regex("\"isAccept\":true"))
         assertContains(json, Regex("\"createdAt\":\\s*\"10.10.2023\""))

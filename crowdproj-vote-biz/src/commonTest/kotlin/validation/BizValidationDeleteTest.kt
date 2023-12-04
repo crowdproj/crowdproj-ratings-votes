@@ -3,6 +3,7 @@ package com.crowdproj.vote.biz.validation
 import com.crowdproj.vote.biz.CwpVoteProcessor
 import com.crowdproj.vote.common.config.CwpVoteCorSettings
 import com.crowdproj.vote.common.models.CwpVoteCommand
+import com.crowdproj.vote.repo.stubs.VoteRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
@@ -12,7 +13,9 @@ class BizValidationDeleteTest {
 
     private val command = CwpVoteCommand.DELETE
     private val settings by lazy {
-        CwpVoteCorSettings()
+        CwpVoteCorSettings(
+            repoTest = VoteRepoStub()
+        )
     }
     private val processor by lazy { CwpVoteProcessor(settings) }
 
