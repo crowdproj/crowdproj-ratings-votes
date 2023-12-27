@@ -5,10 +5,10 @@ import com.crowdproj.vote.common.helpers.errorAdministration
 import com.crowdproj.vote.common.helpers.fail
 import com.crowdproj.vote.common.models.CwpVoteWorkMode
 import com.crowdproj.vote.common.repo.IVoteRepository
-import com.crowdproj.vote.lib.cor.ICorChainDsl
-import com.crowdproj.vote.lib.cor.worker
+import com.crowdproj.kotlin.cor.handlers.worker
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
 
-fun ICorChainDsl<CwpVoteContext>.initRepo(title: String) = worker() {
+fun ICorAddExecDsl<CwpVoteContext>.initRepo(title: String) = worker() {
     this.title = title
     description = "Определение репозитория на основе режима работы"
     handle {

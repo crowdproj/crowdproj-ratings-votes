@@ -26,6 +26,7 @@ fun validationIdCorrect(command: CwpVoteCommand, processor: CwpVoteProcessor) = 
             score = stub.score
         )
     )
+    if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock = stub.lock
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(CwpVoteState.FAILING, ctx.state)
@@ -44,6 +45,7 @@ fun validationIdEmpty(command: CwpVoteCommand, processor: CwpVoteProcessor) = ru
             score = stub.score
         )
     )
+    if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock = stub.lock
     processor.exec(ctx)
     assertEquals(1, ctx.errors.size)
     assertEquals(CwpVoteState.FAILING, ctx.state)
@@ -65,7 +67,9 @@ fun validationIdFormat(command: CwpVoteCommand, processor: CwpVoteProcessor) = r
             score = stub.score
         )
     )
+    if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock = stub.lock
     processor.exec(ctx)
+    println("errors = " + ctx.errors)
     assertEquals(1, ctx.errors.size)
     assertEquals(CwpVoteState.FAILING, ctx.state)
     val error = ctx.errors.firstOrNull()

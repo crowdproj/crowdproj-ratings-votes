@@ -48,9 +48,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
     // log
-//    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-//    implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
-//    runtimeOnly("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
 

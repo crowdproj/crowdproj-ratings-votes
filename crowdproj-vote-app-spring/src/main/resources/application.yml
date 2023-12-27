@@ -19,10 +19,15 @@ springdoc:
       - name: v1
         url: spec-crowdproj-vote-v1.yaml
 sql:
-  url: ${SQL_URL:jdbc:postgresql://localhost:5432/vote}
-  user: ${SQL_USER:postgres}
-  password: ${SQL_PASSWORD:postgres}
-  schema: ${SQL_SCHEMA:vote}
-  table: ${SQL_TABLE:votes}
-  drop-database: ${SQL_DROP_DATABASE:false}
-  fast-migration: ${SQL_FAST_MIGRATION:true}
+  url: "jdbc:postgresql://localhost:5432/vote"
+  user: postgres
+  password: postgres
+  schema: vote
+
+#sql:
+#  url: ${SQL_URL:jdbc:postgresql://localhost:5432/vote?autoReconnect=true"&"useSSL=false }
+#  user: ${SQL_USER:postgres}
+#  password: ${SQL_PASSWORD:postgres}
+#  schema: ${SQL_SCHEMA:vote}
+#  drop-database: ${SQL_DROP_DATABASE:false}
+#  fast-migration: ${SQL_FAST_MIGRATION:true}

@@ -3,10 +3,10 @@ package com.crowdproj.vote.biz.general
 import com.crowdproj.vote.common.CwpVoteContext
 import com.crowdproj.vote.common.models.CwpVoteState
 import com.crowdproj.vote.common.models.CwpVoteWorkMode
-import com.crowdproj.vote.lib.cor.ICorChainDsl
-import com.crowdproj.vote.lib.cor.worker
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 
-fun ICorChainDsl<CwpVoteContext>.prepareResult(title: String) = worker {
+fun ICorAddExecDsl<CwpVoteContext>.prepareResult(title: String) = worker {
     this.title = title
     description = "Prepare object to send response to client"
     on { workMode != CwpVoteWorkMode.STUB }

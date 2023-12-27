@@ -1,9 +1,59 @@
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
+
 plugins {
+    application
     id("org.springframework.boot")
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.serialization")
+    id("com.bmuschko.docker-java-application")
+    id("io.ktor.plugin")
+}
+
+val ktorVersion: String by project
+
+application {
+    mainClass.set("com.crowdproj.vote.app.spring.ApplicationKt")
+}
+//
+//docker {
+//    javaApplication {
+//        mainClassName.set(application.mainClass.get())
+//        baseImage.set("bellsoft/liberica-openjdk-alpine:17")
+//        maintainer.set("(c) Otus")
+//        //ports.set(listOf(8080))
+//        val imageName = project.name
+//        images.set(
+//            listOf(
+//                "$imageName:${project.version}",
+//                "$imageName:latest"
+//            )
+//        )
+//        jvmArgs.set(listOf("-Xms256m", "-Xmx512m"))
+//    }
+//}
+
+ktor {
+    docker {
+        jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
+        localImageName.set(project.name)
+        imageTag.set("${project.version}")
+        portMappings.set(
+            listOf(
+                io.ktor.plugin.features.DockerPortMapping(
+                    80,
+                    8080,
+                    io.ktor.plugin.features.DockerPortMappingProtocol.TCP
+                )
+            )
+        )
+    }
+
 }
 
 kotlin {

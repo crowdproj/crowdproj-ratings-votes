@@ -70,6 +70,7 @@ class BizRepoUpdateTest {
             workMode = CwpVoteWorkMode.TEST,
             voteRequest = voteToUpdate,
         )
+        if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock = CwpVoteLock("testLock")
         processor.exec(ctx)
         assertEquals(CwpVoteState.FINISHING, ctx.state)
         assertEquals(voteToUpdate.id, ctx.voteResponse.id)

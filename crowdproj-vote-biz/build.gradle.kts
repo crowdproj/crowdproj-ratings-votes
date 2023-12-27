@@ -8,6 +8,7 @@ kotlin {
 
     sourceSets {
         val coroutinesVersion: String by project
+        val corVersion: String by project
 
         all { languageSettings.optIn("kotlin.RequiresOptIn") }
 
@@ -16,7 +17,7 @@ kotlin {
                 implementation(kotlin("stdlib-common"))
 
                 implementation(project(":crowdproj-vote-common"))
-                implementation(project(":lib-cor"))
+                implementation("com.crowdproj:kotlin-cor:$corVersion")
                 implementation(project(":lib-logging-module"))
                 implementation(project(":stubs"))
             }

@@ -1,13 +1,13 @@
 package com.crowdproj.vote.biz.workers
 
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.vote.common.CwpVoteContext
 import com.crowdproj.vote.common.models.CwpVoteError
 import com.crowdproj.vote.common.models.CwpVoteState
 import com.crowdproj.vote.common.stubs.CwpVoteStubs
-import com.crowdproj.vote.lib.cor.ICorChainDsl
-import com.crowdproj.vote.lib.cor.worker
 
-fun ICorChainDsl<CwpVoteContext>.stubValidationBadRatingId(title: String) = worker {
+fun ICorAddExecDsl<CwpVoteContext>.stubValidationBadRatingId(title: String) = worker {
     this.title = title
     on { stubCase == CwpVoteStubs.BAD_RATING_ID && state == CwpVoteState.RUNNING }
     handle {

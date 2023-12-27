@@ -1,13 +1,13 @@
 package workers
 
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.vote.common.CwpVoteContext
 import com.crowdproj.vote.common.helpers.fail
 import com.crowdproj.vote.common.models.CwpVoteError
 import com.crowdproj.vote.common.models.CwpVoteState
-import com.crowdproj.vote.lib.cor.ICorChainDsl
-import com.crowdproj.vote.lib.cor.worker
 
-fun ICorChainDsl<CwpVoteContext>.stubNoCase(title: String) = worker {
+fun ICorAddExecDsl<CwpVoteContext>.stubNoCase(title: String) = worker {
     this.title = title
     on { state == CwpVoteState.RUNNING }
     handle {

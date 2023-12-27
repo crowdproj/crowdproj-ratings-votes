@@ -7,7 +7,6 @@ import com.crowdproj.vote.repo.stubs.VoteRepoStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
 
-// TODO-validation-5: смотрим пример теста валидации, собранного из тестовых функций-оберток
 @OptIn(ExperimentalCoroutinesApi::class)
 class BizValidationUpdateTest {
 

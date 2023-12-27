@@ -62,6 +62,7 @@ class BizRepoDeleteTest {
             workMode = CwpVoteWorkMode.TEST,
             voteRequest = adToUpdate,
         )
+        if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock = CwpVoteLock("testLock")
         processor.exec(ctx)
         assertEquals(CwpVoteState.FINISHING, ctx.state)
         assertTrue { ctx.errors.isEmpty() }

@@ -34,10 +34,10 @@ class RepoVoteSQL(
             properties.password
         )
 
-        transaction {
-            SchemaUtils.drop(VoteTable)
-            SchemaUtils.create(VoteTable)
-        }
+//        transaction {
+//            SchemaUtils.drop(VoteTable)
+//            SchemaUtils.create(VoteTable)
+//        }
     }
 
     override suspend fun createVote(rq: DbVoteRequest): DbVoteResponse = transaction {

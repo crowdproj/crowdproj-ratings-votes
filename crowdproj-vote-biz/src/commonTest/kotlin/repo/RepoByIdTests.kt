@@ -54,6 +54,8 @@ fun repoNotFoundTest(command: CwpVoteCommand) = runTest {
             isAccepted = CwpVoteIsAccepted(true)
         )
     )
+    if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock =
+        CwpVoteLock("testLock")
     processor.exec(ctx)
     assertEquals(CwpVoteState.FAILING, ctx.state)
     assertEquals(CwpVote(), ctx.voteResponse)

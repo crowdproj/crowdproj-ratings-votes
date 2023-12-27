@@ -38,9 +38,9 @@ import com.crowdproj.vote.common.models.CwpVoteRatingId
 import com.crowdproj.vote.common.models.CwpVoteScore
 import com.crowdproj.vote.common.models.CwpVoteState
 import com.crowdproj.vote.common.models.CwpVoteUserId
-import com.crowdproj.vote.lib.cor.chain
-import com.crowdproj.vote.lib.cor.rootChain
-import com.crowdproj.vote.lib.cor.worker
+import com.crowdproj.kotlin.cor.handlers.chain
+import com.crowdproj.kotlin.cor.handlers.worker
+import com.crowdproj.kotlin.cor.rootChain
 import workers.stubNoCase
 
 class CwpVoteProcessor(

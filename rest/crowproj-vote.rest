@@ -1,9 +1,9 @@
 
 
-GET http://127.0.0.1:8081/
+GET http://127.0.0.1:80/
 
 ### Create
-POST http://127.0.0.1:8080/api/v1/vote/create
+POST http://0.0.0.0:80/api/v1/vote/create
 Content-Type: application/json
 X-Request-Id: rq-b7936414-ee9f-11ed-a05b-0242ac120003
 
@@ -21,7 +21,7 @@ X-Request-Id: rq-b7936414-ee9f-11ed-a05b-0242ac120003
 }
 
 ### Read
-POST http://127.0.0.1:8080/api/v1/vote/read
+POST http://0.0.0.0:80/api/v1/vote/read
 Content-Type: application/json
 X-Request-Id: rq-b7936414-ee9f-11ed-a05b-0242ac120003
 

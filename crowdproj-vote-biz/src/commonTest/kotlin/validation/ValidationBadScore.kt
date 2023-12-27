@@ -26,6 +26,7 @@ fun validationScoreCorrect(command: CwpVoteCommand, processor: CwpVoteProcessor)
             score = CwpVoteScore("123")
         ),
     )
+    if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock = stub.lock
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(CwpVoteState.FAILING, ctx.state)
@@ -45,6 +46,7 @@ fun validationScoreEmpty(command: CwpVoteCommand, processor: CwpVoteProcessor) =
             score = CwpVoteScore("")
         ),
     )
+    if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock = stub.lock
     processor.exec(ctx)
     assertEquals(1, ctx.errors.size)
     assertEquals(CwpVoteState.FAILING, ctx.state)
@@ -66,6 +68,7 @@ fun validationScoreSymbols(command: CwpVoteCommand, processor: CwpVoteProcessor)
             score = CwpVoteScore("wrongFormat")
         ),
     )
+    if (command == CwpVoteCommand.UPDATE || command == CwpVoteCommand.DELETE) ctx.voteRequest.lock = stub.lock
     processor.exec(ctx)
     assertEquals(1, ctx.errors.size)
     assertEquals(CwpVoteState.FAILING, ctx.state)

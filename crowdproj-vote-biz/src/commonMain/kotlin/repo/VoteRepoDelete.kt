@@ -1,12 +1,12 @@
 package com.crowdproj.vote.biz.repo
 
-import com.crowdproj.vote.lib.cor.ICorChainDsl
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.vote.common.CwpVoteContext
 import com.crowdproj.vote.common.models.CwpVoteState
 import com.crowdproj.vote.common.repo.DbVoteIdRequest
-import com.crowdproj.vote.lib.cor.worker
 
-fun ICorChainDsl<CwpVoteContext>.repoDelete(title: String) = worker {
+fun ICorAddExecDsl<CwpVoteContext>.repoDelete(title: String) = worker {
     this.title = title
     description = "Cancel vote by Id"
     on { state == CwpVoteState.RUNNING }

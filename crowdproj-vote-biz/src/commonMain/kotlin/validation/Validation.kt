@@ -1,11 +1,11 @@
 package com.crowdproj.vote.biz.validation
 
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.chain
 import com.crowdproj.vote.common.CwpVoteContext
 import com.crowdproj.vote.common.models.CwpVoteState
-import com.crowdproj.vote.lib.cor.ICorChainDsl
-import com.crowdproj.vote.lib.cor.chain
 
-fun ICorChainDsl<CwpVoteContext>.validation(block: ICorChainDsl<CwpVoteContext>.() -> Unit) = chain {
+fun ICorAddExecDsl<CwpVoteContext>.validation(block: ICorAddExecDsl<CwpVoteContext>.() -> Unit) = chain {
     block()
     title = "Валидация"
 

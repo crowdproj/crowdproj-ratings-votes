@@ -1,11 +1,11 @@
 package com.crowdproj.vote.biz.repo
 
+import com.crowdproj.kotlin.cor.ICorAddExecDsl
+import com.crowdproj.kotlin.cor.handlers.worker
 import com.crowdproj.vote.common.CwpVoteContext
 import com.crowdproj.vote.common.models.CwpVoteState
-import com.crowdproj.vote.lib.cor.ICorChainDsl
-import com.crowdproj.vote.lib.cor.worker
 
-fun ICorChainDsl<CwpVoteContext>.repoPrepareUpdate(title: String) = worker {
+fun ICorAddExecDsl<CwpVoteContext>.repoPrepareUpdate(title: String) = worker {
     this.title = title
     description = "Prepare data to save into database table"
     on { state == CwpVoteState.RUNNING }
