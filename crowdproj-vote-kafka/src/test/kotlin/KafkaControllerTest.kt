@@ -2,7 +2,6 @@ package com.crowdproj.vote.kafka
 
 import com.crowdproj.vote.api.v1.apiV1RequestSerialize
 import com.crowdproj.vote.api.v1.apiV1ResponseDeserialize
-import com.crowdproj.vote.api.v1.models.Comment
 import com.crowdproj.vote.api.v1.models.VoteCreateObject
 import com.crowdproj.vote.api.v1.models.VoteCreateRequest
 import com.crowdproj.vote.api.v1.models.VoteCreateResponse
@@ -44,7 +43,7 @@ class KafkaControllerTest {
                                 ratingId = "1",
                                 userId = "2",
                                 score = "3",
-                                comment = Comment("4", "test comment")
+                                comment = "testComment"
                             ),
                             debug = VoteDebug(
                                 mode = VoteRequestDebugMode.STUB,
@@ -70,7 +69,7 @@ class KafkaControllerTest {
         assertEquals("1", result.vote?.ratingId)
         assertEquals("2", result.vote?.userId)
         assertEquals("3", result.vote?.score)
-        assertEquals(Comment("4", "test comment"), result.vote?.comment)
+        assertEquals("testComment", result.vote?.comment)
     }
 
     companion object {

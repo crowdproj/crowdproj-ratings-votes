@@ -1,6 +1,5 @@
 package com.crowdproj.vote.api.v1.mappers
 
-import com.crowdproj.vote.api.v1.models.Comment
 import com.crowdproj.vote.api.v1.models.IRequestVote
 import com.crowdproj.vote.api.v1.models.VoteCreateObject
 import com.crowdproj.vote.api.v1.models.VoteCreateRequest
@@ -38,9 +37,9 @@ class CwpVoteCreateTest {
             ),
             vote = VoteCreateObject(
                 ratingId = "10",
-                userId = "11",
+                userId = "testUser",
                 score = "5",
-                comment = Comment(id = "1", name = "test"),
+                comment = "test",
                 isAccept = true
             ),
         )
@@ -49,9 +48,8 @@ class CwpVoteCreateTest {
         assertEquals(CwpVoteWorkMode.STUB, ctx.workMode)
         assertEquals(CwpVoteStubs.BAD_ID, ctx.stubCase)
         assertEquals("10", ctx.voteRequest.ratingId.asString())
-        assertEquals("11", ctx.voteRequest.userId.asString())
+        assertEquals("testUser", ctx.voteRequest.userId.asString())
         assertEquals("5", ctx.voteRequest.score.asString())
-        assertEquals("1", ctx.voteRequest.comment.id)
         assertEquals("test", ctx.voteRequest.comment.value)
         assertEquals(CwpVoteIsAccepted(true), ctx.voteRequest.isAccepted)
         assertEquals(CwpVoteCommand.CREATE, ctx.command)
@@ -67,9 +65,9 @@ class CwpVoteCreateTest {
                 id = CwpVoteId("123"),
                 lock = CwpVoteLock("234"),
                 ratingId = CwpVoteRatingId("10"),
-                userId = CwpVoteUserId("11"),
+                userId = CwpVoteUserId("testUser"),
                 score = CwpVoteScore("5"),
-                comment = CwpVoteComment(id = "1", value = "test"),
+                comment = CwpVoteComment(value = "test"),
                 isAccepted = CwpVoteIsAccepted(true),
                 createAt = now,
                 updateAt = now
@@ -81,9 +79,9 @@ class CwpVoteCreateTest {
         assertEquals("234", api.vote?.lock)
         assertEquals("123", api.vote?.id)
         assertEquals("10", api.vote?.ratingId)
-        assertEquals("11", api.vote?.userId)
+        assertEquals("testUser", api.vote?.userId)
         assertEquals("5", api.vote?.score)
-        assertEquals("1", api.vote?.comment?.id)
+        assertEquals("test", api.vote?.comment)
         assertEquals(now.toString(), api.vote?.createdAt)
         assertEquals(now.toString(), api.vote?.updatedAt)
     }

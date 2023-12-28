@@ -48,19 +48,13 @@ private fun CwpVoteContext.fromApiVoteCreate(vote: VoteCreateObject?) {
     } ?: CwpVote()
 }
 
-private fun Comment?.fromApiComment(): CwpVoteComment =
-    this?.let {
-        if (!this.id.isNullOrBlank() && !this.name.isNullOrBlank())
-            CwpVoteComment(id = this.id!!, value = this.name!!)
-        else CwpVoteComment.NONE
-    } ?: CwpVoteComment.NONE
-
 private fun Boolean?.fromApiIsAccepted(): CwpVoteIsAccepted =
     this?.let { CwpVoteIsAccepted(this) } ?: CwpVoteIsAccepted.NONE
 
 private fun String?.fromApiScore(): CwpVoteScore = this?.let { CwpVoteScore(this) } ?: CwpVoteScore.NONE
 private fun String?.fromApiRatingId(): CwpVoteRatingId = this?.let { CwpVoteRatingId(this) } ?: CwpVoteRatingId.NONE
 private fun String?.fromApiUserId(): CwpVoteUserId = this?.let { CwpVoteUserId(this) } ?: CwpVoteUserId.NONE
+private fun String?.fromApiComment(): CwpVoteComment = this?.let { CwpVoteComment(this) } ?: CwpVoteComment.NONE
 
 private fun CwpVoteContext.fromApiVoteRead(vote: VoteReadObject?) {
     this.voteRequest.id = vote?.id?.toVoteId() ?: CwpVoteId.NONE

@@ -48,16 +48,13 @@ private fun toApiVote(vote: CwpVote): VoteResponseObject? = if (vote.isEmpty()) 
         userId = vote.userId.takeIf { it != CwpVoteUserId.NONE }?.asString(),
         ratingId = vote.ratingId.takeIf { it != CwpVoteRatingId.NONE }?.asString(),
         score = vote.score.takeIf { it != CwpVoteScore.NONE }?.asString(),
-        comment = vote.comment.takeIf { it != CwpVoteComment.NONE }?.toApiComment(),
+        comment = vote.comment.takeIf { it != CwpVoteComment.NONE }?.asString(),
         isAccept = vote.isAccepted.takeIf { it != CwpVoteIsAccepted.NONE }?.value(),
         createdAt = vote.createAt.toString(),
         updatedAt = vote.updateAt.toString(),
         lock = vote.lock.takeIf { it != CwpVoteLock.NONE }?.asString(),
     )
 }
-
-private fun CwpVoteComment?.toApiComment(): Comment? =
-    this?.let { Comment(this.id, this.value) }
 
 private fun CwpVoteContext.toApiErrors(): List<Error>? = errors.map { it.toApiError() }.takeIf { it.isNotEmpty() }
 private fun CwpVoteError.toApiError() = Error(

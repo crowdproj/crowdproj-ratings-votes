@@ -1,8 +1,6 @@
 package com.crowdproj.vote.api.v1.mappers
 
-import com.crowdproj.vote.api.v1.models.Comment
 import com.crowdproj.vote.api.v1.models.IRequestVote
-import com.crowdproj.vote.api.v1.models.VoteCreateResponse
 import com.crowdproj.vote.api.v1.models.VoteDebug
 import com.crowdproj.vote.api.v1.models.VoteRequestDebugMode
 import com.crowdproj.vote.api.v1.models.VoteRequestDebugStubs
@@ -41,7 +39,7 @@ class CwpVoteUpdateTest {
                 ratingId = "10",
                 userId = "11",
                 score = "5",
-                comment = Comment(id = "1", name = "test"),
+                comment = "test",
                 isAccept = true,
                 lock = "lock"
             ),
@@ -54,12 +52,12 @@ class CwpVoteUpdateTest {
         assertEquals("10", ctx.voteRequest.ratingId.asString())
         assertEquals("11", ctx.voteRequest.userId.asString())
         assertEquals("5", ctx.voteRequest.score.asString())
-        assertEquals("1", ctx.voteRequest.comment.id)
         assertEquals("test", ctx.voteRequest.comment.value)
         assertEquals("lock", ctx.voteRequest.lock.asString())
         assertEquals(CwpVoteIsAccepted(true), ctx.voteRequest.isAccepted)
         assertEquals(CwpVoteCommand.UPDATE, ctx.command)
     }
+
     @Test
     fun response() {
         val now: Instant = Clock.System.now()
@@ -72,7 +70,7 @@ class CwpVoteUpdateTest {
                 ratingId = CwpVoteRatingId("10"),
                 userId = CwpVoteUserId("11"),
                 score = CwpVoteScore("5"),
-                comment = CwpVoteComment(id = "1", value = "test"),
+                comment = CwpVoteComment(value = "test"),
                 isAccepted = CwpVoteIsAccepted(true),
                 createAt = now,
                 updateAt = now
@@ -86,7 +84,7 @@ class CwpVoteUpdateTest {
         assertEquals("10", api.vote?.ratingId)
         assertEquals("11", api.vote?.userId)
         assertEquals("5", api.vote?.score)
-        assertEquals("1", api.vote?.comment?.id)
+        assertEquals("test", api.vote?.comment)
         assertEquals(now.toString(), api.vote?.createdAt)
         assertEquals(now.toString(), api.vote?.updatedAt)
     }

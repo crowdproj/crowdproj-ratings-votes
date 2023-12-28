@@ -1,0 +1,81 @@
+openapi: 3.0.4
+info:
+  title: Marketplace log models
+  description: Log models for logging services of marketplace
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+paths: {}
+
+components:
+  schemas:
+    CommonLogModel:
+      title: Общая модель лога
+      description: Общая модель лога для всех микросервисов системы
+      type: object
+      properties:
+        messageTime:
+          type: string
+        logId:
+          type: string
+        source:
+          type: string
+        vote:
+          $ref: '#/components/schemas/CwpLogModel'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorLogModel'
+
+    CwpLogModel:
+      title: Модель лога для микросервиса
+      type: object
+      properties:
+        requestId:
+          type: string
+        operation:
+          type: string
+          enum:
+            - create
+            - read
+            - update
+            - delete
+        requestVote:
+          $ref: '#/components/schemas/VoteLog'
+        responseVote:
+          $ref: '#/components/schemas/VoteLog'
+        responseVotes:
+          type: array
+          items:
+            $ref: '#/components/schemas/VoteLog'
+
+    ErrorLogModel:
+      title: Модель лога для ошибки
+      type: object
+      properties:
+        code:
+          type: string
+          description: "Some specific code to identify an error for programming handling purposes"
+        group:
+          type: string
+          description: "An optional group id to segment different errors"
+        field:
+          type: string
+          description: "An optional field the error relates to"
+        description:
+          type: string
+          description: "A full description of the error with a complete information"
+
+    VoteLog:
+      title: Модель лога для рейтинга
+      type: object
+      properties:
+        id:
+          type: string
+        score:
+          type: string
+        ratingId:
+          type: string
+        userId:
+          type: string

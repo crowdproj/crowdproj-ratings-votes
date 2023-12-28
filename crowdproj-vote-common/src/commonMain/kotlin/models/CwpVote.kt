@@ -1,6 +1,6 @@
 package com.crowdproj.vote.common.models
 
-import kotlinx.datetime.Clock
+import com.crowdproj.vote.common.NONE
 import kotlinx.datetime.Instant
 
 data class CwpVote(
@@ -11,9 +11,10 @@ data class CwpVote(
     var score: CwpVoteScore = CwpVoteScore.NONE,
     var comment: CwpVoteComment = CwpVoteComment.NONE,
     var isAccepted: CwpVoteIsAccepted = CwpVoteIsAccepted.NONE,
-    var createAt: Instant? = Clock.System.now(),
-    var updateAt: Instant? = Clock.System.now()
+    var createAt: Instant? = Instant.NONE,
+    var updateAt: Instant? = Instant.NONE
 ) {
+
     fun isEmpty() = this == NONE
 
     companion object {
